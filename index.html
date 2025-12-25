@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenCloud | منصة الحوسبة السحابية المتقدمة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ... نفس الستايل الذي أرسلته سابقاً بالكامل ... (لختصار المساحة لم أضعه هنا، يرجى إبقاء الستايل كما هو) */
+        :root {
+            --primary: #0062cc;
+            --primary-dark: #004099;
+            --secondary: #f0f4f8;
+            --text-dark: #1a202c;
+            --text-light: #718096;
+            --bg-body: #edf2f7;
+            --white: #ffffff;
+            --danger: #e53e3e;
+            --success: #38a169;
+            --warning: #d69e2e;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --radius: 12px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-item {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+            cursor: pointer;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-item:hover, .nav-item.active { color: var(--primary); }
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            right: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+            border-radius: 2px;
+        }
+
+        .btn-login {
+            background: var(--primary);
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-login:hover { background: var(--primary-dark); transform: translateY(-2px); }
+
+        /* Sections General */
+        .page-section { 
+            display: none; 
+            padding: 2rem; 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            animation: fadeIn 0.4s ease; 
+        }
+        .page-section.active { display: block; }
+        
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        /* Landing Page */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            text-align: center;
+            padding: 6rem 2rem;
+            border-radius: 0 0 50% 50% / 40px;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 { font-size: 3rem; margin-bottom: 1rem; }
+        .hero p { font-size: 1.25rem; opacity: 0.9; max-width: 700px; margin: 0 auto 2rem; }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: inline-block;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+        
+        .btn-primary {
+            background: white;
+            color: var(--primary);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); transform: translateY(-3px); }
+
+        .section-title {
+            text-align: center;
+            color: var(--primary-dark);
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: 50%;
+            transform: translateX(50%);
+            width: 80px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+        }
+        
+        .feature-card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+        }
+        
+        .feature-icon { 
+            font-size: 2.5rem; 
+            color: var(--primary); 
+            margin-bottom: 1rem;
+            width: 80px;
+            height: 80px;
+            background: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+        }
+
+        /* Pricing Section */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .price-card {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border-top: 5px solid var(--secondary);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .price-card:hover { transform: translateY(-5px); }
+
+        .price-card.featured { 
+            border-color: var(--primary); 
+            transform: scale(1.05); 
+            z-index: 2; 
+        }
+        
+        .price-card.featured::before {
+            content: 'الأكثر طلباً';
+            position: absolute;
+            top: 15px; 
+            left: -30px;
+            background: var(--warning);
+            color: white;
+            padding: 5px 40px;
+            transform: rotate(-45deg);
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .price-amount { font-size: 2.5rem; font-weight: 700; color: var(--primary); margin: 1rem 0; }
+        .price-period { font-size: 1rem; color: var(--text-light); }
+        .price-features { margin: 2rem 0; padding: 0; }
+        .price-features li { 
+            list-style: none; 
+            margin-bottom: 0.8rem; 
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+        }
+        
+        .price-features i { color: var(--success); margin-left: 10px; }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-bottom: 4rem;
+        }
+        
+        .about-image {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: var(--radius);
+            padding: 2rem;
+            color: white;
+            text-align: center;
+        }
+        
+        .about-image i {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+        
+        .stat-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .tech-item {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        
+        .tech-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        /* Login/Auth */
+        .auth-container {
+            max-width: 450px;
+            margin: 4rem auto;
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .auth-tab {
+            flex: 1;
+            text-align: center;
+            padding: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .auth-tab.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
+        .form-control {
+            width: 100%; 
+            padding: 0.8rem;
+            border: 2px solid #e2e8f0; 
+            border-radius: 8px;
+            font-family: inherit; 
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        .form-control:focus { border-color: var(--primary); outline: none; }
+        
+        .btn-block { 
+            width: 100%; 
+            display: block; 
+            text-align: center; 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            padding: 0.8rem; 
+            border-radius: 8px; 
+            font-size: 1rem; 
+            cursor: pointer; 
+            font-weight: bold; 
+            margin-top: 1rem;
+        }
+        
+        .btn-block:hover { background: var(--primary-dark); }
+        
+        .form-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        /* Dashboard */
+        .dashboard-layout { 
+            display: grid; 
+            grid-template-columns: 250px 1fr; 
+            gap: 2rem; 
+        }
+        
+        .sidebar { 
+            background: var(--white); 
+            padding: 1.5rem; 
+            border-radius: var(--radius); 
+            height: fit-content; 
+            box-shadow: var(--shadow); 
+        }
+        
+        .sidebar-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .project-name {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        
+        .project-region {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        .sidebar-menu { margin: 0; padding: 0; }
+        .sidebar-menu li { 
+            list-style: none; 
+            padding: 12px 15px;
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: 0.2s; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-menu li:hover, .sidebar-menu li.active { 
+            background: var(--secondary); 
+            color: var(--primary); 
+            font-weight: bold; 
+        }
+        
+        .dash-content { }
+        .resource-bar { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 1rem; 
+            margin-bottom: 2rem; 
+        }
+        
+        .resource-card { 
+            background: var(--white); 
+            padding: 1.5rem; 
+            border-radius: var(--radius); 
+            box-shadow: var(--shadow); 
+            display: flex; 
+            align-items: center; 
+            gap: 1rem; 
+        }
+        
+        .res-icon { 
+            width: 50px; 
+            height: 50px; 
+            background: var(--secondary); 
+            border-radius: 50%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            color: var(--primary); 
+            font-size: 1.2rem; 
+        }
+        
+        .vm-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            background: var(--white); 
+            border-radius: var(--radius); 
+            overflow: hidden; 
+            box-shadow: var(--shadow); 
+        }
+        
+        .vm-table th, .vm-table td { 
+            padding: 1rem; 
+            text-align: right; 
+            border-bottom: 1px solid #edf2f7; 
+        }
+        
+        .vm-table th { 
+            background: #f8fafc; 
+            color: var(--text-light); 
+            font-weight: 600; 
+        }
+        
+        .status-badge { 
+            padding: 0.25rem 0.75rem; 
+            border-radius: 20px; 
+            font-size: 0.8rem; 
+            font-weight: bold; 
+            display: inline-block;
+        }
+        
+        .status-active { background: #c6f6d5; color: #22543d; }
+        .status-error { background: #fed7d7; color: #822727; }
+        .status-building { background: #feebc8; color: #744210; }
+        
+        .action-btn {
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            margin-left: 5px;
+        }
+        
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
+        
+        .create-btn { 
+            background: var(--success); 
+            padding: 0.6rem 1.2rem; 
+            border: none; 
+            border-radius: 6px; 
+            color: white; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            gap: 5px; 
+            font-weight: bold;
+        }
+        
+        .create-btn:hover { background: #2f855a; }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            bottom: 0;
+            background: rgba(0,0,0,0.5); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            z-index: 2000; 
+            opacity: 0; 
+            pointer-events: none; 
+            transition: 0.3s;
+        }
+        
+        .modal-overlay.open { opacity: 1; pointer-events: all; }
+        
+        .modal { 
+            background: var(--white); 
+            width: 500px; 
+            max-width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem; 
+            border-radius: var(--radius); 
+            transform: translateY(-20px); 
+            transition: 0.3s; 
+        }
+        
+        .modal-overlay.open .modal { transform: translateY(0); }
+        .modal h2 { margin-bottom: 1.5rem; color: var(--primary); }
+        .close-modal { 
+            float: left; 
+            font-size: 1.5rem; 
+            cursor: pointer; 
+            color: var(--text-light); 
+            line-height: 1;
+        }
+        
+        .close-modal:hover { color: var(--text-dark); }
+
+        /* Notifications */
+        .toast-container { 
+            position: fixed; 
+            bottom: 20px; 
+            left: 20px; 
+            z-index: 3000; 
+        }
+        
+        .toast { 
+            background: var(--white); 
+            padding: 1rem 1.5rem; 
+            border-radius: 8px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2); 
+            margin-top: 10px; 
+            border-right: 5px solid var(--primary); 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            animation: slideIn 0.3s; 
+            min-width: 300px;
+        }
+        
+        @keyframes slideIn { 
+            from { transform: translateX(-100%); opacity: 0; } 
+            to { transform: translateX(0); opacity: 1; } 
+        }
+        
+        .toast-success { border-color: var(--success); }
+        .toast-error { border-color: var(--danger); }
+        .toast-warning { border-color: var(--warning); }
+
+        /* Footer */
+        footer {
+            background: #1a202c;
+            color: white;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+        
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section ul { list-style: none; }
+        .footer-section ul li { margin-bottom: 0.8rem; }
+        .footer-section ul li a { 
+            color: #a0aec0; 
+            text-decoration: none; 
+            transition: color 0.3s;
+        }
+        
+        .footer-section ul li a:hover { color: white; }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: #2d3748;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: background 0.3s;
+        }
+        
+        .social-links a:hover { background: var(--primary); }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #2d3748;
+            color: #a0aec0;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar { 
+                flex-direction: column; 
+                gap: 1rem; 
+                padding: 1rem;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero {
+                padding: 4rem 1rem;
+                border-radius: 0 0 30% 30% / 20px;
+            }
+            
+            .hero h1 { font-size: 2rem; }
+            .hero p { font-size: 1rem; }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .dashboard-layout { 
+                grid-template-columns: 1fr; 
+            }
+            
+            .price-card.featured {
+                transform: none;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .social-links {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="navbar">
+            <div class="brand" onclick="app.nav('home')">
+                <i class="fa-solid fa-cloud"></i> OpenCloud
+            </div>
+            <nav class="nav-links" id="navLinks">
+                <!-- Dynamic Links -->
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        
+        <!-- 1. Landing Page -->
+        <section id="home" class="page-section active">
+            <div class="hero">
+                <h1>بنية تحتية سحابية حقيقية</h1>
+                <p>انطلق ببنيتك التحتية باستخدام تقنيات Cloud المتقدمة. موارد افتراضية قابلة للتوسع، حماية عالية، وأسعار تنافسية للمشاريع الكبرى.</p>
+                <div class="hero-buttons">
+                    <a href="#" onclick="app.nav('pricing')" class="btn btn-primary">عرض الأسعار</a>
+                    <a href="#" onclick="app.nav('login')" class="btn btn-secondary">ابدأ الآن مجاناً</a>
+                </div>
+            </div>
+
+            <h2 class="section-title">لماذا OpenCloud؟</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-server"></i></div>
+                    <h3>حوسبة فائقة الأداء</h3>
+                    <p>أجهزة افتراضية تعتمد على KVM مع معالجات AMD EPYC ووحدات معالجة رسوميات NVIDIA.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-network-wired"></i></div>
+                    <h3>شبكات خاصة (SDN)</h3>
+                    <p>تصميم الشبكات المعرفة برمجياً (Software Defined Networking) عبر OpenStack Neutron.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h3>أمان وسيادة البيانات</h3>
+                    <p>تحكم كامل في الصور (Images) و مفاتيح التشفير باستخدام Barbican.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Pricing Page -->
+        <section id="pricing" class="page-section">
+            <h2 class="section-title">باقات الحوسبة السحابية</h2>
+            
+            <div class="pricing-grid">
+                <!-- Plan 1 -->
+                <div class="price-card">
+                    <h3>التطوير الصغير</h3>
+                    <p>مثالي للمشاريع الصغيرة والتطوير</p>
+                    <div class="price-amount">$5 <span class="price-period">/شهرياً</span></div>
+                    <ul class="price-features">
+                        <li><i class="fa-solid fa-check"></i> 1 vCPU</li>
+                        <li><i class="fa-solid fa-check"></i> 1 GB RAM</li>
+                        <li><i class="fa-solid fa-check"></i> 25 GB SSD</li>
+                    </ul>
+                    <button class="btn-block" onclick="app.nav('register')">اختر الباقة</button>
+                </div>
+                <!-- Plan 2 -->
+                <div class="price-card featured">
+                    <h3>المشاريع المتوسطة</h3>
+                    <p>الأكثر طلباً للمشاريع المتوسطة</p>
+                    <div class="price-amount">$20 <span class="price-period">/شهرياً</span></div>
+                    <ul class="price-features">
+                        <li><i class="fa-solid fa-check"></i> 2 vCPU</li>
+                        <li><i class="fa-solid fa-check"></i> 4 GB RAM</li>
+                        <li><i class="fa-solid fa-check"></i> 80 GB NVMe SSD</li>
+                    </ul>
+                    <button class="btn-block" onclick="app.nav('register')">اختر الباقة</button>
+                </div>
+                <!-- Plan 3 -->
+                <div class="price-card">
+                    <h3>الإنتاج الاحترافي</h3>
+                    <p>للتطبيقات الهامة والأحمال الكبيرة</p>
+                    <div class="price-amount">$40 <span class="price-period">/شهرياً</span></div>
+                    <ul class="price-features">
+                        <li><i class="fa-solid fa-check"></i> 4 vCPU</li>
+                        <li><i class="fa-solid fa-check"></i> 8 GB RAM</li>
+                        <li><i class="fa-solid fa-check"></i> 160 GB NVMe SSD</li>
+                    </ul>
+                    <button class="btn-block" onclick="app.nav('register')">اختر الباقة</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. About Page -->
+        <section id="about" class="page-section">
+            <div class="hero" style="border-radius: var(--radius); margin-bottom: 3rem;">
+                <h1>عن منصة OpenCloud</h1>
+                <p>منصة سحابية متكاملة تعمل بتقنيات مفتوحة المصدر، مصممة لتلبية احتياجات الشركات والمطورين.</p>
+            </div>
+
+            <div class="about-content">
+                <div>
+                    <h2>قصتنا</h2>
+                    <p style="margin: 1.5rem 0; line-height: 1.8;">
+                        تأسست OpenCloud عام 2024 بهدف توفير حلول سحابية تعليمية متقدمة. 
+                        نؤمن بأن التقنيات السحابية يجب أن تكون في متناول الجميع، مع الحفاظ على أعلى معايير الأمان والموثوقية.
+                    </p>
+                </div>
+                <div class="about-image">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <h3>الريادة في السحابة العربية</h3>
+                    <p>أول منصة سحابية تعتمد كلياً على تقنيات مفتوحة المصدر</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Login / Register -->
+        <section id="login" class="page-section">
+            <div class="auth-container">
+                <div class="auth-tabs">
+                    <div class="auth-tab active" onclick="app.showAuthTab('login')">تسجيل الدخول</div>
+                    <div class="auth-tab" onclick="app.showAuthTab('register')">حساب جديد</div>
+                </div>
+                
+                <div id="loginForm">
+                    <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary);">تسجيل الدخول</h2>
+                    <form onsubmit="app.login(event)">
+                        <div class="form-group">
+                            <label>اسم المستخدم</label>
+                            <input type="text" id="loginUser" class="form-control" placeholder="admin" required>
+                        </div>
+                        <div class="form-group">
+                            <label>كلمة المرور</label>
+                            <input type="password" id="loginPass" class="form-control" placeholder="admin123" required>
+                        </div>
+                        <button type="submit" class="btn-block">دخول للوحة التحكم</button>
+                    </form>
+                </div>
+                
+                <div id="registerForm" style="display: none;">
+                    <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary);">حساب جديد</h2>
+                    <form onsubmit="app.register(event)">
+                        <div class="form-group">
+                            <label>اسم المستخدم</label>
+                            <input type="text" class="form-control" id="regUsername" placeholder="ahmed123" required>
+                        </div>
+                        <div class="form-group">
+                            <label>كلمة المرور</label>
+                            <input type="password" class="form-control" id="regPassword" placeholder="******" required>
+                        </div>
+                        <button type="submit" class="btn-block">إنشاء حساب</button>
+                    </form>
+                </div>
+                
+                <div class="form-footer">
+                    <p>جرب الدخول بـ user: <strong>admin</strong> و pass: <strong>admin123</strong></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Dashboard (Control Panel) -->
+        <section id="dashboard" class="page-section">
+            <div class="dashboard-layout">
+                <!-- Sidebar -->
+                <aside class="sidebar">
+                    <div class="sidebar-header">
+                        <div class="project-name">مشروعي الأول</div>
+                        <div class="project-region">Region: RegionOne</div>
+                        <small style="color: var(--success);"><i class="fa-solid fa-circle"></i> متصل</small>
+                    </div>
+                    <ul class="sidebar-menu">
+                        <li class="active"><i class="fa-solid fa-gauge-high"></i> نظرة عامة</li>
+                        <li onclick="app.nav('compute')"><i class="fa-solid fa-server"></i> Compute (Nova)</li>
+                        <li onclick="app.toast('الميزة قادمة في الإصدار القادم')"><i class="fa-solid fa-network-wired"></i> Network (Neutron)</li>
+                        <li style="margin-top: 2rem; color: var(--danger);" onclick="app.logout()">
+                            <i class="fa-solid fa-right-from-bracket"></i> تسجيل خروج
+                        </li>
+                    </ul>
+                </aside>
+
+                <!-- Content -->
+                <div class="dash-content">
+                    <!-- Resource Usage -->
+                    <div class="resource-bar">
+                        <div class="resource-card">
+                            <div class="res-icon"><i class="fa-solid fa-microchip"></i></div>
+                            <div>
+                                <div style="font-weight: bold; font-size: 1.2rem;" id="cpuUsage">0/4</div>
+                                <div style="color: var(--text-light); font-size: 0.9rem;">vCPUs مستخدمة</div>
+                            </div>
+                        </div>
+                        <div class="resource-card">
+                            <div class="res-icon"><i class="fa-solid fa-memory"></i></div>
+                            <div>
+                                <div style="font-weight: bold; font-size: 1.2rem;" id="ramUsage">0/8</div>
+                                <div style="color: var(--text-light); font-size: 0.9rem;">GB RAM مستخدمة</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Instances Table -->
+                    <div style="background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h3>الأجهزة الافتراضية (Instances)</h3>
+                            <button class="create-btn" onclick="app.openModal()"><i class="fa-solid fa-plus"></i> إنشاء Instance جديد</button>
+                        </div>
+                        
+                        <table class="vm-table">
+                            <thead>
+                                <tr>
+                                    <th>الاسم</th>
+                                    <th>الـ IP</th>
+                                    <th>النوع (Flavor)</th>
+                                    <th>حالة التشغيل</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="vmListBody">
+                                <!-- Rows will be populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>OpenCloud</h3>
+                <p style="color: #a0aec0; margin-bottom: 1.5rem;">منصة سحابية متكاملة تعمل بتقنيات مفتوحة المصدر.</p>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2024 OpenCloud. جميع الحقوق محفوظة.
+        </div>
+    </footer>
+
+    <!-- Create VM Modal -->
+    <div class="modal-overlay" id="vmModal">
+        <div class="modal">
+            <span class="close-modal" onclick="app.closeModal()">&times;</span>
+            <h2>إنشاء Instance جديد</h2>
+            <form onsubmit="app.createVM(event)">
+                <div class="form-group">
+                    <label>اسم الخادم (Instance Name)</label>
+                    <input type="text" id="vmName" class="form-control" placeholder="web-server-01" required>
+                </div>
+                <div class="form-group">
+                    <label>نوع الخادم (Flavor)</label>
+                    <select id="vmFlavor" class="form-control">
+                        <option value="m1.small">m1.small (1 vCPU, 1GB RAM)</option>
+                        <option value="m1.medium">m1.medium (2 vCPU, 4GB RAM)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>صورة النظام (Image Source)</label>
+                    <select class="form-control" id="vmImage">
+                        <option>Ubuntu 22.04 LTS</option>
+                        <option>CentOS Stream 9</option>
+                    </select>
+                </div>
+                <div style="background: var(--secondary); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.9rem;">
+                    <strong>معلومات الطلب:</strong> سيتم تخصيص الموارد فوراً من Cloud Provider.
+                </div>
+                <button type="submit" class="btn-block">تأكيد الإنشاء (Launch)</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastArea"></div>
+
+    <script>
+        // ==========================================
+        // CONFIG: عنوان الباك إند
+        // ==========================================
+        const API_URL = "http://127.0.0.1:8000"; 
+
+        class CloudApp {
+            constructor() {
+                this.user = null;
+                this.token = null; // Token للمصادقة
+                this.vms = [];
+                
+                this.init();
+            }
+
+            init() {
+                // التحقق من وجود توكن في المتصفح
+                const savedToken = localStorage.getItem('oc_token');
+                const savedUser = localStorage.getItem('oc_user');
+                
+                if (savedToken && savedUser) {
+                    this.token = savedToken;
+                    this.user = savedUser;
+                    // إذا مسجل دخول، اجلب البيانات
+                    this.fetchVMs();
+                }
+
+                this.renderNav();
+                this.updateResourceDisplay();
+            }
+
+            // Navigation
+            nav(pageId) {
+                document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+                const targetSection = document.getElementById(pageId);
+                if (targetSection) targetSection.classList.add('active');
+                else document.getElementById('home').classList.add('active');
+                
+                this.renderNav();
+                window.scrollTo(0, 0);
+                
+                if (pageId === 'dashboard') {
+                    this.renderDashboard();
+                }
+            }
+
+            renderNav() {
+                const nav = document.getElementById('navLinks');
+                nav.innerHTML = '';
+                
+                const links = [
+                    { id: 'home', text: 'الرئيسية', icon: 'fa-home' },
+                    { id: 'pricing', text: 'الأسعار', icon: 'fa-tags' },
+                    { id: 'about', text: 'عن المنصة', icon: 'fa-info-circle' }
+                ];
+                
+                links.forEach(link => {
+                    const a = document.createElement('a');
+                    a.className = 'nav-item';
+                    a.innerHTML = `<i class="fa-solid ${link.icon}"></i> ${link.text}`;
+                    a.onclick = () => this.nav(link.id);
+                    nav.appendChild(a);
+                });
+                
+                const authLink = document.createElement('a');
+                if (this.user) {
+                    authLink.className = 'btn-login';
+                    authLink.innerHTML = `<i class="fa-solid fa-user"></i> ${this.user}`;
+                    authLink.onclick = () => this.nav('dashboard');
+                } else {
+                    authLink.className = 'btn-login';
+                    authLink.textContent = 'دخول';
+                    authLink.onclick = () => this.nav('login');
+                }
+                nav.appendChild(authLink);
+            }
+
+            // Authentication (REAL API CALLS)
+            showAuthTab(tab) {
+                document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
+                document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
+                document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+                event.target.classList.add('active');
+            }
+
+            async login(e) {
+                e.preventDefault();
+                const username = document.getElementById('loginUser').value;
+                const password = document.getElementById('loginPass').value;
+                
+                try {
+                    const response = await fetch(`${API_URL}/auth/login`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ username, password })
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        this.token = data.access_token;
+                        this.user = username;
+                        localStorage.setItem('oc_token', this.token);
+                        localStorage.setItem('oc_user', this.user);
+                        
+                        this.toast(`مرحباً بك، ${username}!`, 'success');
+                        this.init();
+                        this.nav('dashboard');
+                    } else {
+                        this.toast('اسم المستخدم أو كلمة المرور خطأ', 'error');
+                    }
+                } catch (err) {
+                    this.toast('خطأ في الاتصال بالخادم', 'error');
+                }
+            }
+
+            async register(e) {
+                e.preventDefault();
+                const username = document.getElementById('regUsername').value;
+                const password = document.getElementById('regPassword').value;
+                
+                try {
+                    const response = await fetch(`${API_URL}/auth/register`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ username, password })
+                    });
+
+                    if (response.ok) {
+                        this.toast('تم إنشاء الحساب بنجاح! قم بتسجيل الدخول', 'success');
+                        this.showAuthTab('login');
+                    } else {
+                        this.toast('حدث خطأ أثناء التسجيل', 'error');
+                    }
+                } catch (err) {
+                    this.toast('خطأ في الاتصال بالخادم', 'error');
+                }
+            }
+
+            logout() {
+                this.user = null;
+                this.token = null;
+                this.vms = [];
+                localStorage.removeItem('oc_token');
+                localStorage.removeItem('oc_user');
+                this.toast('تم تسجيل الخروج', 'success');
+                this.init();
+                this.nav('home');
+            }
+
+            // VM Management (REAL API CALLS)
+            openModal() { document.getElementById('vmModal').classList.add('open'); }
+            closeModal() { document.getElementById('vmModal').classList.remove('open'); }
+
+            async fetchVMs() {
+                try {
+                    const response = await fetch(`${API_URL}/api/vms`, {
+                        headers: { 'Authorization': `Bearer ${this.token}` }
+                    });
+                    
+                    if (response.ok) {
+                        this.vms = await response.json();
+                        this.calculateUsage();
+                        this.renderDashboard();
+                    }
+                } catch (err) {
+                    console.error("Failed to fetch VMs", err);
+                }
+            }
+
+            async createVM(e) {
+                e.preventDefault();
+                const name = document.getElementById('vmName').value;
+                const flavor = document.getElementById('vmFlavor').value;
+                const image = document.getElementById('vmImage').value;
+                
+                // تحويل الـ flavor إلى أرقام للحساب (محاكاة)
+                let req = { cpu: 1, ram: 1 };
+                if(flavor === 'm1.medium') req = { cpu: 2, ram: 4 };
+
+                try {
+                    this.toast('جاري الاتصال بالخادم السحابي...', 'warning');
+                    
+                    const response = await fetch(`${API_URL}/api/vms/create`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${this.token}`
+                        },
+                        body: JSON.stringify({ name, flavor, image, req })
+                    });
+
+                    if (response.ok) {
+                        this.closeModal();
+                        this.toast('تم إرسال طلب الإنشاء', 'success');
+                        this.fetchVMs(); // تحديث القائمة
+                    } else {
+                        const err = await response.json();
+                        this.toast(err.detail || 'فشل الإنشاء', 'error');
+                    }
+                } catch (err) {
+                    this.toast('خطأ في الاتصال', 'error');
+                }
+            }
+
+            async deleteVM(id) {
+                if(!confirm('هل أنت متأكد من حذف هذا الـ Instance؟')) return;
+                
+                try {
+                    const response = await fetch(`${API_URL}/api/vms/${id}`, {
+                        method: 'DELETE',
+                        headers: { 'Authorization': `Bearer ${this.token}` }
+                    });
+
+                    if (response.ok) {
+                        this.toast('تم الحذف بنجاح', 'success');
+                        this.fetchVMs();
+                    } else {
+                        this.toast('فشل الحذف', 'error');
+                    }
+                } catch (err) {
+                    this.toast('خطأ في الاتصال', 'error');
+                }
+            }
+
+            calculateUsage() {
+                let cpu = 0, ram = 0;
+                this.vms.forEach(vm => {
+                    cpu += vm.req_cpu || 1;
+                    ram += vm.req_ram || 1;
+                });
+                document.getElementById('cpuUsage').textContent = `${cpu}/4`;
+                document.getElementById('ramUsage').textContent = `${ram}/8`;
+            }
+
+            renderDashboard() {
+                const tbody = document.getElementById('vmListBody');
+                if (!tbody) return;
+                tbody.innerHTML = '';
+
+                if (this.vms.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 3rem;">لا توجد أجهزة افتراضية</td></tr>`;
+                    return;
+                }
+
+                this.vms.forEach(vm => {
+                    let statusClass = 'status-building';
+                    let statusText = vm.status;
+                    if (vm.status === 'ACTIVE') statusClass = 'status-active';
+                    if (vm.status === 'ERROR') statusClass = 'status-error';
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><div style="font-weight:bold;">${vm.name}</div><small style="color:#777">${vm.cloud_id || 'Local'}</small></td>
+                        <td>${vm.ip_address || '...'}</td>
+                        <td>${vm.flavor}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>
+                            <button class="action-btn btn-danger" onclick="app.deleteVM('${vm.id}')">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            toast(msg, type = 'success') {
+                const container = document.getElementById('toastArea');
+                const div = document.createElement('div');
+                div.className = `toast toast-${type}`;
+                div.innerHTML = `<div>${msg}</div>`;
+                container.appendChild(div);
+                setTimeout(() => div.remove(), 3000);
+            }
+        }
+
+        const app = new CloudApp();
+    </script>
+</body>
+</html>

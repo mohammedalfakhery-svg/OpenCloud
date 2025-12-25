@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+pydantic
+python-jose[cryptography]  # لتشفير التوكن
+passlib[bcrypt]             # لتشفير كلمات المرور
+sqlalchemy                  # للتعامل مع قاعدة البيانات
+oci                         # مكتبة Oracle Cloud SDK
